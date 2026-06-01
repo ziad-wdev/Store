@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 
-import { ThemeProvider } from "@/components/ui/theme-provider";
-
 import { cn } from "@/lib/utils";
+
+import { ReduxProvider } from "@/store/provider";
+import Header from "@/components/web/header";
+import Footer from "@/components/web/footer";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -21,16 +23,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={cn("h-full font-sans antialiased", inter.variable, geistMono.variable)}
-      suppressHydrationWarning
-    >
-      <body className="min-h-full">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+    <ReduxProvider>
+      <html lang="en" className={cn("h-full antialiased", inter.variable, geistMono.variable)} suppressHydrationWarning>
+        <body className="flex min-h-full flex-col">
+          <Header />
+          <div className="flex flex-1 flex-col">{children}</div>
+          <Footer />
+        </body>
+      </html>
+    </ReduxProvider>
   );
 }
