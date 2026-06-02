@@ -21,10 +21,10 @@ const ProductPageSearch = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const choosenCategory = searchParams.get("category") || "";
-  const searchQuery = searchParams.get("search") || "";
+  const category = searchParams.get("category") || "";
+  const search = searchParams.get("search") || "";
 
-  const [localSearch, setLocalSearch] = useState(searchQuery);
+  const [localSearch, setLocalSearch] = useState(search);
 
   const { data, isLoading } = useGetCategoryListQuery();
 
@@ -48,17 +48,17 @@ const ProductPageSearch = () => {
 
   useEffect(() => {
     const searchDebounce = setTimeout(() => {
-      if (localSearch !== searchQuery) {
+      if (localSearch !== search) {
         updateParams({ search: localSearch, page: 1 });
       }
     }, 400);
 
     return () => clearTimeout(searchDebounce);
-  }, [localSearch, searchQuery]);
+  }, [localSearch, search]);
 
   useEffect(() => {
-    setLocalSearch(searchQuery);
-  }, [searchQuery]);
+    setLocalSearch(search);
+  }, [search]);
 
   return (
     <div className="flex-center container gap-2 py-8">
@@ -66,13 +66,13 @@ const ProductPageSearch = () => {
         <DropdownMenuTrigger
           render={
             <Button>
-              {choosenCategory ? `Category: ${choosenCategory}` : "Choose Category"} <ChevronDown />
+              {category ? `Category: ${category}` : "Choose Category"} <ChevronDown />
             </Button>
           }
         ></DropdownMenuTrigger>
         <DropdownMenuContent className="w-60" align="start">
           <DropdownMenuGroup>
-            <DropdownMenuRadioGroup value={choosenCategory} onValueChange={(value) => handleCategoryChange(value)}>
+            <DropdownMenuRadioGroup value={category} onValueChange={(value) => handleCategoryChange(value)}>
               {isLoading ? (
                 <DropdownMenuRadioItem value="loading" disabled>
                   Loading...

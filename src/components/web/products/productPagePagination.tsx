@@ -17,7 +17,7 @@ const ProductPagePagination = ({ totalPages }: { totalPages: number }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const pageNumber = Number(searchParams.get("page")) || 1;
+  const page = Number(searchParams.get("page")) || 1;
 
   const updateParams = (updates: Record<string, string | number | null>) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -33,12 +33,12 @@ const ProductPagePagination = ({ totalPages }: { totalPages: number }) => {
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
-  const handlePageChange = (choosenPageNumber: number) => {
-    const targetNumber = Math.min(totalPages, Math.max(1, choosenPageNumber));
+  const handlePageChange = (choosenPage: number) => {
+    const targetNumber = Math.min(totalPages, Math.max(1, choosenPage));
     updateParams({ page: targetNumber });
   };
 
-  let startPage = Math.max(1, pageNumber - 2);
+  let startPage = Math.max(1, page - 2);
   const endPage = Math.min(totalPages, startPage + 4);
 
   if (endPage - startPage < 4) {
@@ -50,8 +50,8 @@ const ProductPagePagination = ({ totalPages }: { totalPages: number }) => {
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            className={pageNumber === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-            onClick={() => handlePageChange(pageNumber - 1)}
+            className={page === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+            onClick={() => handlePageChange(page - 1)}
           />
         </PaginationItem>
         {startPage > 1 && (
@@ -67,7 +67,7 @@ const ProductPagePagination = ({ totalPages }: { totalPages: number }) => {
               <PaginationLink
                 className="cursor-pointer"
                 onClick={() => handlePageChange(targetPage)}
-                isActive={pageNumber === targetPage}
+                isActive={page === targetPage}
               >
                 {targetPage}
               </PaginationLink>
@@ -81,8 +81,8 @@ const ProductPagePagination = ({ totalPages }: { totalPages: number }) => {
         )}
         <PaginationItem>
           <PaginationNext
-            className={pageNumber === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-            onClick={() => handlePageChange(pageNumber + 1)}
+            className={page === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+            onClick={() => handlePageChange(page + 1)}
           />
         </PaginationItem>
       </PaginationContent>

@@ -8,17 +8,18 @@ import ProductPagePagination from "@/components/web/products/productPagePaginati
 import { useGetProductsQuery } from "@/store/apis/productsApi";
 
 type props = {
-  category: string;
-  search: string;
-  page: number;
+  category?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
 };
 
-export default function ProductSearchResults({ category, search, page }: props) {
+export default function ProductSearchResults({ category, search, page, limit }: props) {
   const { data, isLoading } = useGetProductsQuery({
     category: category,
     search: search,
     page: page,
-    limit: 6,
+    limit: limit,
   });
 
   const products = data?.products ?? [];
@@ -26,7 +27,7 @@ export default function ProductSearchResults({ category, search, page }: props) 
 
   return (
     <>
-      <div className="relative container grid grid-cols-2 grid-rows-2 gap-6 lg:grid-cols-3">
+      <div className="relative container grid grid-cols-1 grid-rows-2 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {isLoading
           ? Array.from({ length: 6 }).map((_, i) => <ProductCardSkeleton key={i} />)
           : products.length === 0

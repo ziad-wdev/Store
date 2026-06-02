@@ -146,8 +146,18 @@
 }
 
 .skeleton {
-  @apply rounded bg-gray-200 text-transparent;
+  @apply bg-gray-200 text-transparent;
   animation: skeleton-loading 1.5s infinite ease-in-out;
+}
+
+p.skeleton,
+h1.skeleton,
+h2.skeleton,
+h3.skeleton,
+h4.skeleton,
+h5.skeleton,
+h6.skeleton {
+  @apply rounded-[var(--radius)];
 }
 
 @keyframes skeleton-loading {

@@ -11,7 +11,7 @@ const Services = () => {
 
   return (
     <div className="bg-primary">
-      <div className="container grid grid-cols-2 gap-6 py-20 md:grid-cols-2 lg:grid-cols-4">
+      <div className="container grid grid-cols-1 gap-6 py-20 sm:grid-cols-2 lg:grid-cols-4">
         {services.map((service, index) => (
           <Card key={index} className="bg-background text-primary flex-center flex-col gap-0">
             <div className="text-primary bg-primary-foreground mb-4 rounded-full p-2">{service.icon}</div>

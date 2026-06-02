@@ -64,11 +64,12 @@ export interface GetProductsParams {
 
 export const productsApi = createApi({
   reducerPath: "productsApi",
+  refetchOnFocus: true,
   baseQuery: fetchBaseQuery({ baseUrl: "https://dummyjson.com/" }),
   endpoints: (builder) => ({
     getProducts: builder.query<{ products: Product[]; totalPages: number }, GetProductsParams | void>({
       query: (params: GetProductsParams) => {
-        const { category, page = 1, limit = 9, search } = params || {};
+        const { category, page = 1, limit = 6, search } = params || {};
 
         if (category && search) {
           return { url: `products/category/${category}`, params: { limit: 100 } };
@@ -91,7 +92,7 @@ export const productsApi = createApi({
         };
       },
       transformResponse: (response: DummyJsonResponse, meta, arg: GetProductsParams) => {
-        const { category, search, page = 1, limit = 9 } = arg || {};
+        const { category, search, page = 1, limit = 6 } = arg || {};
 
         if (category && search) {
           const query = search.toLowerCase();
@@ -145,10 +146,6 @@ export const productsApi = createApi({
     getProductById: builder.query<Product, string>({
       query: (id: string) => `products/${id}`,
     }),
-
-    getSimilarProducts: builder.query<Product[], string>({
-      query: (id: string) => `products/${id}/similar`,
-    }),
   }),
 });
 
@@ -159,5 +156,4 @@ export const {
   useGetNewArrivalsQuery,
   useGetBestSellersQuery,
   useGetProductByIdQuery,
-  useGetSimilarProductsQuery,
 } = productsApi;
