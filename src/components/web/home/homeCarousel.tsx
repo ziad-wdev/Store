@@ -65,6 +65,7 @@ const HomeCarousel = () => {
                       height={500}
                       src={product.thumbnail}
                       alt={product.title}
+                      loading="eager"
                     />
                   </Link>
                 </CarouselItem>

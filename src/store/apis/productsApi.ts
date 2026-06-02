@@ -141,6 +141,14 @@ export const productsApi = createApi({
         return response.products.sort((a, b) => b.rating - a.rating);
       },
     }),
+
+    getProductById: builder.query<Product, string>({
+      query: (id: string) => `products/${id}`,
+    }),
+
+    getSimilarProducts: builder.query<Product[], string>({
+      query: (id: string) => `products/${id}/similar`,
+    }),
   }),
 });
 
@@ -150,4 +158,6 @@ export const {
   useGetDiscountsQuery,
   useGetNewArrivalsQuery,
   useGetBestSellersQuery,
+  useGetProductByIdQuery,
+  useGetSimilarProductsQuery,
 } = productsApi;

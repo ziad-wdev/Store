@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Pagination,
   PaginationContent,
@@ -36,6 +38,13 @@ const ProductPagePagination = ({ totalPages }: { totalPages: number }) => {
     updateParams({ page: targetNumber });
   };
 
+  let startPage = Math.max(1, pageNumber - 2);
+  const endPage = Math.min(totalPages, startPage + 4);
+
+  if (endPage - startPage < 4) {
+    startPage = Math.max(1, endPage - 4);
+  }
+
   return (
     <Pagination className="py-8">
       <PaginationContent>
@@ -45,11 +54,13 @@ const ProductPagePagination = ({ totalPages }: { totalPages: number }) => {
             onClick={() => handlePageChange(pageNumber - 1)}
           />
         </PaginationItem>
-        {Array.from({ length: 5 }).map((_, i) => {
-          const startPage = Math.max(1, pageNumber - 2);
+        {startPage > 1 && (
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
+        )}
+        {Array.from({ length: endPage - startPage + 1 }).map((_, i) => {
           const targetPage = startPage + i;
-
-          if (targetPage > totalPages) return null;
 
           return (
             <PaginationItem key={targetPage}>
@@ -63,7 +74,7 @@ const ProductPagePagination = ({ totalPages }: { totalPages: number }) => {
             </PaginationItem>
           );
         })}
-        {pageNumber > totalPages - 2 && (
+        {endPage < totalPages && (
           <PaginationItem>
             <PaginationEllipsis />
           </PaginationItem>

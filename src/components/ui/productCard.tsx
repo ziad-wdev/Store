@@ -19,6 +19,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           height={180}
           src={product.thumbnail}
           alt={product.title}
+          loading="eager"
         />
         <Button
           variant="outline"
