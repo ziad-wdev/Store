@@ -121,10 +121,7 @@ const ProductInfo = ({ id }: props) => {
             </>
           ) : product ? (
             <>
-              <Link
-                href={`/products/${id}/overflow`}
-                className="bg-muted aspect-square w-full max-w-md flex-1 overflow-hidden rounded-xl max-sm:aspect-video"
-              >
+              <div className="bg-muted aspect-square w-full max-w-md flex-1 overflow-hidden rounded-xl max-sm:aspect-video">
                 <Image
                   className="size-full object-contain transition-transform duration-300 hover:scale-105"
                   width={500}
@@ -133,7 +130,7 @@ const ProductInfo = ({ id }: props) => {
                   alt={product.title}
                   loading="eager"
                 />
-              </Link>
+              </div>
               <div className="flex-1">
                 <h2 className="mb-4 w-fit text-2xl lg:text-3xl">
                   {product.title} <span className="text-muted-foreground text-sm">{product.category}</span>

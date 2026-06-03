@@ -7,7 +7,7 @@ type Props = {
 const ProductPage = async ({ params }: Props) => {
   const { id } = await params;
 
-  return <ProductInfo id={id} />;
+  return <ProductInfo id={Number(id)} />;
 };
 
 export default ProductPage;
