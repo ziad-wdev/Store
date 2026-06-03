@@ -36,7 +36,7 @@ const HomeCarousel = () => {
       {isLoading ? (
         <HomeCarouselSkeleton />
       ) : (
-        <div className="flex-center container h-full flex-col gap-6 py-20">
+        <div className="flex-center container h-full flex-col gap-6 py-16">
           <Carousel
             setApi={setApi}
             plugins={[plugin.current]}
@@ -47,22 +47,19 @@ const HomeCarousel = () => {
           >
             <CarouselContent>
               {carouselItems.map((product) => (
-                <CarouselItem
-                  key={product.id}
-                  className="flex items-center justify-between gap-6 max-sm:flex-col-reverse"
-                >
-                  <div className="flex h-full flex-1 flex-col items-start">
-                    <h2 className="mb-4 line-clamp-1 text-2xl lg:text-3xl">{product.title}</h2>
+                <CarouselItem key={product.id} className="flex justify-between gap-6 max-sm:flex-col-reverse">
+                  <div className="flex-1">
+                    <h2 className="mb-4 line-clamp-1 w-fit text-2xl lg:text-3xl">{product.title}</h2>
                     <p className="text-muted-foreground mb-6 max-w-md max-sm:line-clamp-2 lg:text-lg">
                       {product.description}
                     </p>
                     <Link href={`/products/${product.id}`}>
-                      <Button className="lg:p-6 lg:text-lg">View Product</Button>
+                      <Button>View Product</Button>
                     </Link>
                   </div>
                   <Link
                     href={`/products/${product.id}`}
-                    className="bg-muted aspect-square w-1/2 max-w-md flex-1 overflow-hidden rounded-xl max-sm:aspect-video max-sm:w-full"
+                    className="bg-muted aspect-square w-full max-w-md flex-1 overflow-hidden rounded-xl max-sm:aspect-video"
                   >
                     <Image
                       className="size-full object-contain transition-transform duration-300 hover:scale-105"

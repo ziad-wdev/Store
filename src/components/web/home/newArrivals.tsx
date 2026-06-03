@@ -11,7 +11,7 @@ const NewArrivals = () => {
 
   return (
     <section className="bg-muted-foreground/10">
-      <div className="container py-20">
+      <div className="container py-16">
         <h2 className="mb-10 text-center text-4xl font-bold">New Arrivals</h2>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {isLoading

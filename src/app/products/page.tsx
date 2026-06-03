@@ -14,7 +14,7 @@ const ProductSearchPage = async ({ searchParams }: props) => {
 
   return (
     <main>
-      <h1 className="bg-accent-foreground text-accent py-20 text-center text-6xl font-medium">Products</h1>
+      <h1 className="bg-accent-foreground text-accent py-16 text-center text-6xl font-medium">Products</h1>
       <ProductPageSearch />
 
       <ProductSearchResults category={category} search={search} page={page} />

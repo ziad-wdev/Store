@@ -46,6 +46,7 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --breakpoint-xs: 28rem;
 }
 
 :root {
@@ -146,7 +147,7 @@
 }
 
 .skeleton {
-  @apply bg-gray-200 text-transparent;
+  @apply pointer-events-none bg-gray-200 text-transparent;
   animation: skeleton-loading 1.5s infinite ease-in-out;
 }
 
