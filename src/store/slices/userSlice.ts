@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { toast } from "sonner";
 
 interface CartItem {
   id: string;
@@ -26,20 +27,27 @@ const userSlice = createSlice({
       state.likes = state.likes.filter((id) => id !== action.payload);
     },
     addToCart: (state, action) => {
-      state.cart.push(action.payload);
-    },
-    removeFromCart: (state, action) => {
-      state.cart = state.cart.filter((item) => item.id !== action.payload);
-    },
-    updateCartItemQuantity: (state, action) => {
       const { id, quantity } = action.payload;
       const item = state.cart.find((item) => item.id === id);
       if (item) {
-        item.quantity = quantity;
+        item.quantity += quantity;
+      } else {
+        state.cart.push({ id, quantity });
+      }
+    },
+    removeFromCart: (state, action) => {
+      const { id, quantity } = action.payload;
+      const item = state.cart.find((item) => item.id === id);
+      if (item) {
+        if (item.quantity > quantity) {
+          item.quantity -= quantity;
+        } else {
+          state.cart = state.cart.filter((item) => item.id !== id);
+        }
       }
     },
   },
 });
 
-export const { addLike, removeLike, addToCart, removeFromCart, updateCartItemQuantity } = userSlice.actions;
+export const { addLike, removeLike, addToCart, removeFromCart } = userSlice.actions;
 export default userSlice.reducer;

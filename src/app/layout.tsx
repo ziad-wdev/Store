@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { ReduxProvider } from "@/store/provider";
 import Header from "@/components/web/header";
 import Footer from "@/components/web/footer";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -29,6 +30,7 @@ export default function RootLayout({
           <Header />
           <div className="flex flex-1 flex-col">{children}</div>
           <Footer />
+          <Toaster theme="dark" position="top-center" />
         </body>
       </html>
     </ReduxProvider>

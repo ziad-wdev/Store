@@ -1,23 +1,23 @@
 "use client";
 
 import { useGetProductByIdQuery, useGetProductsQuery } from "@/store/apis/productsApi";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { useDispatch, useSelector } from "react-redux";
+import { addLike, removeLike, addToCart } from "@/store/slices/userSlice";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+
+import { Heart, Star, StarHalf, ChevronDown } from "lucide-react";
 import ProductCard from "@/components/ui/productCard";
 import ProductCardSkeleton from "@/components/ui/productCardSkeleton";
 import ProductPagePagination from "./productPagePagination";
-import { Heart, Star, StarHalf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Input } from "@/components/ui/input";
-
-import { useDispatch, useSelector } from "react-redux";
-import { addLike, removeLike, addToCart, updateCartItemQuantity } from "@/store/slices/userSlice";
-import { cn } from "@/lib/utils";
-import { useState } from "react";
-
-import { useSearchParams } from "next/navigation";
 
 type props = {
   id: number;
@@ -41,11 +41,9 @@ const ProductInfo = ({ id }: props) => {
   const fullStars = Math.floor(roundedRating);
   const halfStars = roundedRating % 1 !== 0 ? 1 : 0;
 
-  const isLiked = useSelector((state) => state.user.likes.includes(product?.id));
-  const cartQuantity = useSelector((state) => state.user.cart.find((item) => item.id === product?.id)?.quantity ?? 0);
-  const [addValue, setAddValue] = useState(1);
   const dispatch = useDispatch();
 
+  const isLiked = useSelector((state) => state.user.likes.includes(product?.id));
   const handleLikeToggle = () => {
     if (!product) return;
     if (isLiked) {
@@ -53,25 +51,28 @@ const ProductInfo = ({ id }: props) => {
     } else {
       dispatch(addLike(product.id));
     }
+    toast.success(isLiked ? "Product unliked!" : "Product liked!");
   };
 
+  const [addValue, setAddValue] = useState(1);
   const handleAddToCart = () => {
     if (!product) return;
-    if (cartQuantity > 0) {
-      dispatch(
-        updateCartItemQuantity({
-          id: product.id,
-          quantity: cartQuantity + addValue,
-        }),
-      );
+    dispatch(
+      addToCart({
+        id: product.id,
+        quantity: addValue,
+      }),
+    );
+    if (addValue === 1) {
+      toast.success("Added " + addValue + " item to cart!");
     } else {
-      dispatch(
-        addToCart({
-          id: product.id,
-          quantity: addValue,
-        }),
-      );
+      toast.success("Added " + addValue + " items to cart!");
     }
+  };
+
+  const [isReviewsOpen, setIsReviewsOpen] = useState(false);
+  const toggleReviews = () => {
+    setIsReviewsOpen(!isReviewsOpen);
   };
 
   return (
@@ -82,10 +83,11 @@ const ProductInfo = ({ id }: props) => {
             <>
               <div className="bg-muted aspect-square w-full max-w-md flex-1 overflow-hidden rounded-xl max-sm:aspect-video"></div>
               <div className="flex-1">
-                <h2 className="skeleton mb-4 w-fit text-2xl lg:text-3xl">Product title</h2>
+                <h2 className="skeleton mb-4 w-fit text-2xl lg:text-3xl">Product Title</h2>
                 <p className="skeleton mb-6 max-w-md lg:text-lg">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet minus atque fuga, sit fugit repellat ex
-                  distinctio odit quae repellendus.
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt ducimus esse tempore debitis, nam ullam
+                  quibusdam deserunt libero ad at explicabo alias velit eveniet quaerat dolor distinctio nemo sint,
+                  dolores id maxime!
                 </p>
                 <div className="mb-2">
                   <div className="text-muted-foreground/25 flex items-center gap-2">
@@ -94,7 +96,7 @@ const ProductInfo = ({ id }: props) => {
                     ))}
                   </div>
                 </div>
-                <p className="skeleton mb-6 w-fit text-xl font-bold lg:text-2xl">price</p>
+                <p className="skeleton mb-4 w-fit text-xl font-bold lg:text-2xl">Price</p>
                 <div className="flex items-center gap-4">
                   <ButtonGroup>
                     <Button className="skeleton">Add to Cart</Button>
@@ -106,9 +108,14 @@ const ProductInfo = ({ id }: props) => {
                       className="skeleton max-w-24 min-w-0"
                     />
                   </ButtonGroup>
-                  <Button variant="outline" className="skeleton">
-                    <Heart />
-                  </Button>
+                  <ButtonGroup>
+                    <Button variant="outline" className="skeleton">
+                      <Heart />
+                    </Button>
+                    <Button variant="outline" className="skeleton">
+                      Reviews (0) <ChevronDown />
+                    </Button>
+                  </ButtonGroup>
                 </div>
               </div>
             </>
@@ -143,11 +150,11 @@ const ProductInfo = ({ id }: props) => {
                     {Array.from({ length: fullStars }).map((_, i) => (
                       <Star key={i} size={24} fill="currentColor" />
                     ))}
-                    {halfStars === 1 && <StarHalf size={24} />}
+                    {halfStars === 1 && <StarHalf size={24} fill="currentColor" />}
                   </div>
                 </div>
-                <p className="text-card-foreground mb-6 text-xl font-bold lg:text-2xl">${product.price}</p>
-                <div className="flex items-center gap-4">
+                <p className="text-card-foreground mb-4 text-xl font-bold lg:text-2xl">${product.price}</p>
+                <div className="mb-4 flex items-center gap-4">
                   <ButtonGroup>
                     <Button onClick={handleAddToCart}>Add to Cart</Button>
                     <Input
@@ -159,14 +166,23 @@ const ProductInfo = ({ id }: props) => {
                       className="max-w-24 min-w-0"
                     />
                   </ButtonGroup>
-                  <Button
-                    variant="outline"
-                    onClick={handleLikeToggle}
-                    className={cn({ "text-red-500 hover:text-red-500": isLiked })}
-                  >
-                    <Heart className={isLiked ? "fill-current" : ""} />
-                  </Button>
+                  <ButtonGroup>
+                    <Button
+                      variant="outline"
+                      onClick={handleLikeToggle}
+                      className={cn({ "text-red-500 hover:text-red-500": isLiked })}
+                    >
+                      <Heart className={isLiked ? "fill-current" : ""} />
+                    </Button>
+                    <Button variant="outline" onClick={toggleReviews}>
+                      Reviews ({product?.reviews.length ?? 0}){" "}
+                      <ChevronDown
+                        className={cn("transition-transform duration-300", { "-rotate-180": isReviewsOpen })}
+                      />
+                    </Button>
+                  </ButtonGroup>
                 </div>
+                <div className={cn("flex flex-col gap-4", { "opacity-0": !isReviewsOpen })}>sda</div>
               </div>
             </>
           ) : (

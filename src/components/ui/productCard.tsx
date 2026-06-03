@@ -1,13 +1,14 @@
+import { useDispatch, useSelector } from "react-redux";
+import { addLike, removeLike, addToCart } from "@/store/slices/userSlice";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Card, CardDescription, CardHeader } from "./card";
 import { Product } from "@/store/apis/productsApi";
 import { Button } from "./button";
 import { Plus, Heart, Star, StarHalf } from "lucide-react";
-
-import { useDispatch, useSelector } from "react-redux";
-import { addLike, removeLike, addToCart } from "@/store/slices/userSlice";
-import { cn } from "@/lib/utils";
 
 const ProductCard = ({ product }: { product: Product }) => {
   const roundedRating = Math.round(product.rating * 2) / 2;
@@ -17,7 +18,6 @@ const ProductCard = ({ product }: { product: Product }) => {
   const dispatch = useDispatch();
 
   const isLiked = useSelector((state) => state.user.likes.includes(product.id));
-  const cartQuantity = useSelector((state) => state.user.cart.find((item) => item.id === product.id)?.quantity ?? 0);
 
   const handleLikeToggle = () => {
     if (isLiked) {
@@ -25,10 +25,12 @@ const ProductCard = ({ product }: { product: Product }) => {
     } else {
       dispatch(addLike(product.id));
     }
+    toast.success(isLiked ? "Product unliked!" : "Product liked!");
   };
 
   const handleAddToCart = () => {
-    dispatch(addToCart({ id: product.id, quantity: cartQuantity + 1 }));
+    dispatch(addToCart({ id: product.id, quantity: 1 }));
+    toast.success("Added 1 item to cart!");
   };
 
   return (
