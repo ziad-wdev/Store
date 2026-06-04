@@ -10,7 +10,7 @@ const CartSummary = () => {
   const cart: { product: Product; quantity: number }[] = useSelector((state: RootState) => state.user.cart);
 
   return (
-    <Card className="w-full max-w-md gap-0 p-4">
+    <Card className="h-fit w-full max-w-md gap-0 p-4">
       <h2 className="text-lg lg:text-xl">Cart Summary</h2>
       <Separator className="my-2"></Separator>
       {cart.length === 0 ? (

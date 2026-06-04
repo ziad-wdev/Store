@@ -11,6 +11,7 @@ import { X, Plus, Minus } from "lucide-react";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Product } from "@/store/apis/productsApi";
 import { toast } from "sonner";
+import Link from "next/link";
 
 const CardList = () => {
   const cart = useSelector((state: RootState) => state.user.cart);
@@ -29,41 +30,49 @@ const CardList = () => {
   };
 
   return (
-    <div className="flex w-full flex-col gap-4">
-      {cart.map((item) => (
-        <Card key={item.product.id} className="grid grid-cols-[auto_1fr] gap-0 p-0">
-          <CardHeader className="border-foreground/10 bg-muted aspect-square h-full overflow-hidden rounded-none border-r p-0">
-            <Image
-              className="size-full object-contain object-center transition-transform duration-300 group-hover:scale-105"
-              width={500}
-              height={500}
-              src={item.product.thumbnail}
-              alt={item.product.title}
-              loading="eager"
-            />
-          </CardHeader>
-          <div className="flex flex-col gap-2 p-4">
-            <div className="flex items-center justify-between gap-2">
-              <h3 className="text-lg font-semibold">{item.product.title}</h3>
-              <Button variant="ghost" size="sm" onClick={() => handleRemove(item.product.id, item.quantity)}>
-                <X />
-              </Button>
-            </div>
-            <p className="text-muted-foreground text-sm">Quantity: {item.quantity}</p>
-            <div className="flex items-center justify-between gap-2">
-              <p className="text-card-foreground text-lg font-bold lg:text-xl">${item.product.price}</p>
-              <ButtonGroup>
-                <Button variant="outline" size="sm" onClick={() => handleDecrease(item.product.id)}>
-                  <Minus />
+    <div className="flex w-full flex-col justify-center gap-4">
+      {cart.length === 0 ? (
+        <p className="text-muted-foreground text-center text-2xl font-medium">Your cart is empty</p>
+      ) : (
+        cart.map((item) => (
+          <Card key={item.product.id} className="grid grid-cols-[auto_1fr] gap-0 p-0">
+            <CardHeader className="border-foreground/10 bg-muted aspect-square h-full overflow-hidden rounded-none border-r p-0">
+              <Link href={`/products/${item.product.id}`} className="group size-full">
+                <Image
+                  className="object-contain object-center transition-transform duration-300 group-hover:scale-105"
+                  width={500}
+                  height={500}
+                  src={item.product.thumbnail}
+                  alt={item.product.title}
+                  loading="eager"
+                />
+              </Link>
+            </CardHeader>
+            <div className="flex flex-col gap-2 p-4">
+              <div className="flex items-center justify-between gap-2">
+                <Link href={`/products/${item.product.id}`}>
+                  <h3 className="text-lg font-semibold">{item.product.title}</h3>
+                </Link>
+                <Button variant="ghost" size="sm" onClick={() => handleRemove(item.product.id, item.quantity)}>
+                  <X />
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => handleIncrease(item.product)}>
-                  <Plus />
-                </Button>
-              </ButtonGroup>
+              </div>
+              <p className="text-muted-foreground text-sm">Quantity: {item.quantity}</p>
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-card-foreground text-lg font-bold lg:text-xl">${item.product.price}</p>
+                <ButtonGroup>
+                  <Button variant="outline" size="sm" onClick={() => handleDecrease(item.product.id)}>
+                    <Minus />
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => handleIncrease(item.product)}>
+                    <Plus />
+                  </Button>
+                </ButtonGroup>
+              </div>
             </div>
-          </div>
-        </Card>
-      ))}
+          </Card>
+        ))
+      )}
     </div>
   );
 };

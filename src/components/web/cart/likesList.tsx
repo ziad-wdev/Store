@@ -1,10 +1,10 @@
 "use client";
 
-import ProductCard from "@/components/ui/productCard";
 import { useSelector } from "react-redux";
-import { useSearchParams } from "next/navigation";
-import ProductPagePagination from "../products/productPagePagination";
 import { RootState } from "@/store/store";
+import { useSearchParams } from "next/navigation";
+import ProductCard from "@/components/ui/productCard";
+import ProductPagePagination from "../products/productPagePagination";
 
 const LikesList = () => {
   const searchParams = useSearchParams();
@@ -19,7 +19,7 @@ const LikesList = () => {
 
   return (
     <div>
-      <h2 className="mb-10 text-center text-4xl font-bold">You Might Also Like</h2>
+      <h2 className="mb-10 text-center text-4xl font-bold">Your Liked Products</h2>
       {likes.length === 0 ? (
         <p className="text-muted-foreground pb-16 text-center text-2xl font-medium">
           You haven&apos;t liked any products yet
