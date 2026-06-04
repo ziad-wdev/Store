@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono"
 
 export const metadata: Metadata = {
   title: "Store",
-  description: "",
+  description: "Discover a wide range of products and enjoy a seamless shopping experience with our modern, high-performance e-commerce platform.",
 };
 
 export default function RootLayout({
