@@ -2,6 +2,8 @@ import CartList from "@/components/web/cart/cartList";
 import CartSummary from "@/components/web/cart/cartSummary";
 import LikesList from "@/components/web/cart/likesList";
 
+export const dynamic = "force-dynamic";
+
 const CartPage = () => {
   return (
     <>
