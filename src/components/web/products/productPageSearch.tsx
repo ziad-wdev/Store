@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdownMenu";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useGetCategoryListQuery } from "@/store/apis/productsApi";
+import { Category, useGetCategoryListQuery } from "@/store/apis/productsApi";
 import { useEffect, useState } from "react";
 
 const ProductPageSearch = () => {
@@ -80,7 +80,7 @@ const ProductPageSearch = () => {
               ) : (
                 <>
                   <DropdownMenuRadioItem value="">All Categories</DropdownMenuRadioItem>
-                  {data?.map((category) => (
+                  {data?.map((category: Category) => (
                     <DropdownMenuRadioItem key={category.slug} value={category.slug}>
                       {category.name}
                     </DropdownMenuRadioItem>
