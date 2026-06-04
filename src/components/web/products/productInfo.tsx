@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetProductByIdQuery, useGetProductsQuery } from "@/store/apis/productsApi";
+import { Product, Review, useGetProductByIdQuery, useGetProductsQuery } from "@/store/apis/productsApi";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
@@ -18,6 +18,8 @@ import ProductPagePagination from "./productPagePagination";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { AppDispatch, RootState } from "@/store/store";
 
 type props = {
   id: number;
@@ -27,29 +29,31 @@ const ProductInfo = ({ id }: props) => {
   const searchParams = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
 
-  const { data: product, isLoading: isLoadingProduct } = useGetProductByIdQuery(id);
+  const { data: product, isLoading: isLoadingProduct }: ReturnType<typeof useGetProductByIdQuery> =
+    useGetProductByIdQuery(id);
 
-  const { data: similarProductsData, isLoading: isLoadingSimilarProductsData } = useGetProductsQuery({
-    category: product?.category ?? "",
-    page,
-  });
+  const { data: similarProductsData, isLoading: isLoadingSimilarProductsData }: ReturnType<typeof useGetProductsQuery> =
+    useGetProductsQuery({
+      category: product?.category ?? "",
+      page,
+    });
 
-  const similarProducts = similarProductsData?.products.filter((p) => p.id !== id) ?? [];
+  const similarProducts = similarProductsData?.products.filter((product: Product) => product.id !== id) ?? [];
   const similarProductsPages = similarProductsData?.totalPages ?? 1;
 
   const roundedRating = Math.round((product?.rating ?? 0) * 2) / 2;
   const fullStars = Math.floor(roundedRating);
   const halfStars = roundedRating % 1 !== 0 ? 1 : 0;
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
-  const isLiked = useSelector((state) => state.user.likes.includes(product?.id));
+  const isLiked = useSelector((state: RootState) => state.user.likes.includes(product));
   const handleLikeToggle = () => {
     if (!product) return;
     if (isLiked) {
-      dispatch(removeLike(product.id));
+      dispatch(removeLike(product));
     } else {
-      dispatch(addLike(product.id));
+      dispatch(addLike(product));
     }
     toast.success(isLiked ? "Product unliked!" : "Product liked!");
   };
@@ -59,15 +63,11 @@ const ProductInfo = ({ id }: props) => {
     if (!product) return;
     dispatch(
       addToCart({
-        id: product.id,
+        product,
         quantity: addValue,
       }),
     );
-    if (addValue === 1) {
-      toast.success("Added " + addValue + " item to cart!");
-    } else {
-      toast.success("Added " + addValue + " items to cart!");
-    }
+    toast.success(`Added ${addValue} item${addValue !== 1 ? "s" : ""} to cart`);
   };
 
   const [isReviewsOpen, setIsReviewsOpen] = useState(false);
@@ -78,7 +78,7 @@ const ProductInfo = ({ id }: props) => {
   return (
     <>
       <div className="container gap-6 py-16">
-        <div className="flex justify-between gap-6 max-sm:flex-col">
+        <div className="flex items-start justify-between gap-6 max-sm:flex-col">
           {isLoadingProduct ? (
             <>
               <div className="bg-muted aspect-square w-full max-w-md flex-1 overflow-hidden rounded-xl max-sm:aspect-video"></div>
@@ -136,14 +136,14 @@ const ProductInfo = ({ id }: props) => {
                   {product.title} <span className="text-muted-foreground text-sm">{product.category}</span>
                 </h2>
                 <p className="text-muted-foreground mb-6 max-w-md lg:text-lg">{product.description}</p>
-                <div className="relative mb-2">
-                  <div className="text-muted-foreground/25 flex items-center gap-2">
+                <div className="mb-2 grid">
+                  <div className="text-muted-foreground/25 col-span-full row-span-full flex items-center gap-2">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <Star key={i} size={24} />
                     ))}
-                    <span className="text-muted-foreground text-sm">{product.rating}</span>
+                    <span className="text-muted-foreground text-sm">{product?.rating}</span>
                   </div>
-                  <div className="text-primary absolute top-0 flex items-center gap-2">
+                  <div className="text-primary col-span-full row-span-full flex items-center gap-2">
                     {Array.from({ length: fullStars }).map((_, i) => (
                       <Star key={i} size={24} fill="currentColor" />
                     ))}
@@ -179,7 +179,42 @@ const ProductInfo = ({ id }: props) => {
                     </Button>
                   </ButtonGroup>
                 </div>
-                <div className={cn("flex flex-col gap-4", { "opacity-0": !isReviewsOpen })}>sda</div>
+                <div
+                  className={cn("grid grid-cols-1 grid-rows-[1fr] transition-all duration-500", {
+                    "invisible grid-rows-[0fr] opacity-0": !isReviewsOpen,
+                  })}
+                >
+                  <div className="flex flex-col gap-4 overflow-hidden p-px">
+                    {product?.reviews.map((review: Review, i: number) => {
+                      const roundedReviewRating = Math.round((review.rating ?? 0) * 2) / 2;
+                      const reviewFullStars = Math.floor(roundedReviewRating);
+                      const reviewHalfStars = roundedReviewRating % 1 !== 0 ? 1 : 0;
+
+                      return (
+                        <Card key={i} className="gap-0 p-4">
+                          <div className="mb-2 flex justify-between gap-2">
+                            <h2 className="text-xl lg:text-2xl">{review.reviewerName}</h2>
+                            <div className="grid">
+                              <div className="text-muted-foreground/25 col-span-full row-span-full flex items-center gap-2">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                  <Star key={i} size={16} />
+                                ))}
+                                <span className="text-muted-foreground text-sm">{review.rating}</span>
+                              </div>
+                              <div className="text-primary col-span-full row-span-full flex items-center gap-2">
+                                {Array.from({ length: reviewFullStars }).map((_, i) => (
+                                  <Star key={i} size={16} fill="currentColor" />
+                                ))}
+                                {reviewHalfStars === 1 && <StarHalf size={16} fill="currentColor" />}
+                              </div>
+                            </div>
+                          </div>
+                          <p className="text-muted-foreground max-w-md lg:text-lg">{review.comment}</p>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             </>
           ) : (
@@ -201,7 +236,7 @@ const ProductInfo = ({ id }: props) => {
         <div className="grid grid-cols-1 grid-rows-2 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {isLoadingSimilarProductsData
             ? Array.from({ length: 6 }).map((_, i) => <ProductCardSkeleton key={i} />)
-            : similarProducts.map((product) => <ProductCard key={product.id} product={product} />)}
+            : similarProducts.map((product: Product) => <ProductCard key={product.id} product={product} />)}
         </div>
       </div>
       <ProductPagePagination totalPages={similarProductsPages} />

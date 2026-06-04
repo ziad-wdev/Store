@@ -143,8 +143,19 @@ export const productsApi = createApi({
       },
     }),
 
-    getProductById: builder.query<Product, number>({
-      query: (id: number) => `products/${id}`,
+    getProductById: builder.query<Product | Product[], number | number[]>({
+      query: (id: number | number[]) => {
+        if (!Array.isArray(id)) {
+          return `products/${id}`;
+        }
+        return `products?ids=${id.join(",")}`;
+      },
+      transformResponse: (response: Product | { products: Product[] }) => {
+        if ("products" in response) {
+          return response.products as Product[];
+        }
+        return response as Product;
+      },
     }),
   }),
 });

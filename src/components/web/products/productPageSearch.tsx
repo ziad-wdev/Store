@@ -26,7 +26,7 @@ const ProductPageSearch = () => {
 
   const [localSearch, setLocalSearch] = useState(search);
 
-  const { data, isLoading } = useGetCategoryListQuery();
+  const { data, isLoading }: ReturnType<typeof useGetCategoryListQuery> = useGetCategoryListQuery();
 
   const updateParams = (updates: Record<string, string | number | null>) => {
     const params = new URLSearchParams(searchParams.toString());

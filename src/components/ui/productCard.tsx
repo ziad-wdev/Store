@@ -9,33 +9,34 @@ import { Card, CardDescription, CardHeader } from "./card";
 import { Product } from "@/store/apis/productsApi";
 import { Button } from "./button";
 import { Plus, Heart, Star, StarHalf } from "lucide-react";
+import { AppDispatch, RootState } from "@/store/store";
 
 const ProductCard = ({ product }: { product: Product }) => {
   const roundedRating = Math.round(product.rating * 2) / 2;
   const fullStars = Math.floor(roundedRating);
   const halfStars = roundedRating % 1 !== 0 ? 1 : 0;
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
-  const isLiked = useSelector((state) => state.user.likes.includes(product.id));
+  const isLiked = useSelector((state: RootState) => state.user.likes.includes(product));
 
   const handleLikeToggle = () => {
     if (isLiked) {
       dispatch(removeLike(product.id));
     } else {
-      dispatch(addLike(product.id));
+      dispatch(addLike(product));
     }
     toast.success(isLiked ? "Product unliked!" : "Product liked!");
   };
 
   const handleAddToCart = () => {
-    dispatch(addToCart({ id: product.id, quantity: 1 }));
+    dispatch(addToCart({ product, quantity: 1 }));
     toast.success("Added 1 item to cart!");
   };
 
   return (
     <Card className="group gap-0 p-0">
-      <CardHeader className="bg-muted/50 border-b-foreground/10 relative border-b p-0">
+      <CardHeader className="border-foreground/10 bg-muted relative border-b p-0">
         <Link href={`/products/${product.id}`} className="aspect-video size-full overflow-hidden">
           <Image
             className="size-full object-contain object-center transition-transform duration-300 group-hover:scale-105"
@@ -59,17 +60,18 @@ const ProductCard = ({ product }: { product: Product }) => {
       </CardHeader>
       <CardDescription className="flex flex-col p-6">
         <Link href={`/products/${product.id}`}>
-          <h2 className="text-card-foreground mb-4 line-clamp-1 w-fit text-lg font-medium lg:text-xl">
+          <h2 className="text-card-foreground mb-2 line-clamp-1 w-fit text-lg font-medium lg:text-xl">
             {product.title}
           </h2>
         </Link>
-        <div className="relative mb-6">
-          <div className="text-muted-foreground/25 flex items-center gap-2">
+        <div className="mb-4 grid">
+          <div className="text-muted-foreground/25 col-span-full row-span-full flex items-center gap-2">
             {Array.from({ length: 5 }).map((_, i) => (
               <Star key={i} size={24} />
             ))}
+            <span className="text-muted-foreground text-sm">{product?.rating}</span>
           </div>
-          <div className="text-primary absolute top-0 flex items-center gap-2">
+          <div className="text-primary col-span-full row-span-full flex items-center gap-2">
             {Array.from({ length: fullStars }).map((_, i) => (
               <Star key={i} size={24} fill="currentColor" />
             ))}

@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { toast } from "sonner";
+import { Product } from "../apis/productsApi";
 
 interface CartItem {
-  id: string;
+  product: Product;
   quantity: number;
 }
 
 interface UserState {
-  likes: string[];
+  likes: Product[];
   cart: CartItem[];
 }
 
@@ -24,25 +24,25 @@ const userSlice = createSlice({
       state.likes.push(action.payload);
     },
     removeLike: (state, action) => {
-      state.likes = state.likes.filter((id) => id !== action.payload);
+      state.likes = state.likes.filter((product) => product.id !== action.payload);
     },
     addToCart: (state, action) => {
-      const { id, quantity } = action.payload;
-      const item = state.cart.find((item) => item.id === id);
+      const { product, quantity } = action.payload;
+      const item = state.cart.find((item) => item.product.id === product.id);
       if (item) {
         item.quantity += quantity;
       } else {
-        state.cart.push({ id, quantity });
+        state.cart.push({ product, quantity });
       }
     },
     removeFromCart: (state, action) => {
-      const { id, quantity } = action.payload;
-      const item = state.cart.find((item) => item.id === id);
+      const { productId, quantity } = action.payload;
+      const item = state.cart.find((item) => item.product.id === productId);
       if (item) {
         if (item.quantity > quantity) {
           item.quantity -= quantity;
         } else {
-          state.cart = state.cart.filter((item) => item.id !== id);
+          state.cart = state.cart.filter((item) => item.product.id !== productId);
         }
       }
     },

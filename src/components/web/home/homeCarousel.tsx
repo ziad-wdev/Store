@@ -13,7 +13,7 @@ import Link from "next/link";
 import HomeCarouselSkeleton from "@/components/ui/homeCarouselSkeleton";
 
 const HomeCarousel = () => {
-  const { data, isLoading } = useGetBestSellersQuery();
+  const { data, isLoading }: ReturnType<typeof useGetBestSellersQuery> = useGetBestSellersQuery();
   const itemsNumber = 5;
   const carouselItems = data?.slice(0, itemsNumber) || [];
 

@@ -1,11 +1,11 @@
 "use client";
 
-import { useGetDiscountsQuery } from "@/store/apis/productsApi";
+import { Product, useGetDiscountsQuery } from "@/store/apis/productsApi";
 import ProductCard from "@/components/ui/productCard";
 import ProductCardSkeleton from "@/components/ui/productCardSkeleton";
 
 const Discounts = () => {
-  const { data, isLoading } = useGetDiscountsQuery();
+  const { data, isLoading }: ReturnType<typeof useGetDiscountsQuery> = useGetDiscountsQuery();
   const itemsNumber = 6;
   const showedItems = data?.slice(0, itemsNumber) || [];
 
@@ -15,7 +15,7 @@ const Discounts = () => {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {isLoading
           ? Array.from({ length: itemsNumber }).map((_, i) => <ProductCardSkeleton key={i} />)
-          : showedItems?.map((product) => <ProductCard key={product.id} product={product} />)}
+          : showedItems?.map((product: Product) => <ProductCard key={product.id} product={product} />)}
       </div>
     </div>
   );

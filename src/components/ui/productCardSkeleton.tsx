@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 const ProductCardSkeleton = ({ blurred = false }) => {
   return (
     <Card className={cn("group pointer-events-none gap-0 p-0", { "blur-xs": blurred })}>
-      <CardHeader className="skeleton bg-muted/50 border-b-foreground/10 relative border-b p-0">
+      <CardHeader className="skeleton border-foreground/10 relative border-b p-0">
         <div className="aspect-video size-full"></div>
         <Button
           variant="outline"
@@ -17,8 +17,8 @@ const ProductCardSkeleton = ({ blurred = false }) => {
         </Button>
       </CardHeader>
       <CardDescription className="flex flex-col p-6">
-        <h2 className="skeleton mb-4 w-fit text-lg font-medium select-none lg:text-xl">Product title</h2>
-        <div className="relative mb-6">
+        <h2 className="skeleton mb-2 w-fit text-lg font-medium select-none lg:text-xl">Product title</h2>
+        <div className="mb-4">
           <div className="text-muted-foreground/25 flex items-center gap-2">
             {Array.from({ length: 5 }).map((_, i) => (
               <Star key={i} size={24} />

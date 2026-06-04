@@ -5,7 +5,7 @@ import ProductCardSkeleton from "@/components/ui/productCardSkeleton";
 
 import ProductPagePagination from "@/components/web/products/productPagePagination";
 
-import { useGetProductsQuery } from "@/store/apis/productsApi";
+import { Product, useGetProductsQuery } from "@/store/apis/productsApi";
 
 type props = {
   category?: string;
@@ -15,7 +15,7 @@ type props = {
 };
 
 export default function ProductSearchResults({ category, search, page, limit }: props) {
-  const { data, isLoading } = useGetProductsQuery({
+  const { data, isLoading }: ReturnType<typeof useGetProductsQuery> = useGetProductsQuery({
     category: category,
     search: search,
     page: page,
@@ -32,7 +32,7 @@ export default function ProductSearchResults({ category, search, page, limit }: 
           ? Array.from({ length: 6 }).map((_, i) => <ProductCardSkeleton key={i} />)
           : products.length === 0
             ? Array.from({ length: 6 }).map((_, i) => <ProductCardSkeleton key={i} blurred />)
-            : products.map((product) => <ProductCard key={product.id} product={product} />)}
+            : products.map((product: Product) => <ProductCard key={product.id} product={product} />)}
 
         {!isLoading && products.length === 0 ? (
           <h2 className="absolute top-1/2 left-1/2 -translate-1/2 text-3xl font-medium">No Results</h2>
