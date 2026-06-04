@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetBestSellersQuery } from "@/store/apis/productsApi";
+import { Product, useGetBestSellersQuery } from "@/store/apis/productsApi";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -40,13 +40,13 @@ const HomeCarousel = () => {
           <Carousel
             setApi={setApi}
             plugins={[plugin.current]}
-            onMouseEnter={plugin.current.stop}
-            onMouseLeave={plugin.current.play}
+            onMouseEnter={() => plugin.current.stop()}
+            onMouseLeave={() => plugin.current.play()}
             className="w-full"
             opts={{ loop: true }}
           >
             <CarouselContent>
-              {carouselItems.map((product) => (
+              {carouselItems.map((product: Product) => (
                 <CarouselItem key={product.id} className="flex justify-between gap-6 max-sm:flex-col-reverse">
                   <div className="flex-1">
                     <h2 className="mb-4 line-clamp-1 w-fit text-2xl lg:text-3xl">{product.title}</h2>
@@ -75,7 +75,7 @@ const HomeCarousel = () => {
             </CarouselContent>
           </Carousel>
           <div className="flex-center gap-2">
-            {carouselItems.map((_, i) => (
+            {carouselItems.map((_: never, i: number) => (
               <button
                 key={i}
                 onClick={() => api?.scrollTo(i)}
