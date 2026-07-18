@@ -1,16 +1,26 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { productsApi } from "./apis/productsApi";
-import { setupListeners } from "@reduxjs/toolkit/query";
-import userReducer from "./slices/userSlice";
-import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import { configureStore } from '@reduxjs/toolkit'
+import { setupListeners } from '@reduxjs/toolkit/query'
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+
+import { productsApi } from './apis/productsApi'
+import userReducer from './slices/userSlice'
 
 const persistConfig = {
-  key: "user",
+  key: 'user',
   storage,
-};
+}
 
-const persistedUserReducer = persistReducer(persistConfig, userReducer);
+const persistedUserReducer = persistReducer(persistConfig, userReducer)
 
 export const store = configureStore({
   reducer: {
@@ -23,11 +33,11 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }).concat(productsApi.middleware),
-});
+})
 
-export const persistor = persistStore(store);
+export const persistor = persistStore(store)
 
-setupListeners(store.dispatch);
+setupListeners(store.dispatch)
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch

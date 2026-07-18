@@ -1,14 +1,16 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { Store, ShoppingCart } from "lucide-react";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import Link from 'next/link'
+
+import { ShoppingCart, Store } from 'lucide-react'
+import { useSelector } from 'react-redux'
+
+import { RootState } from '@/store/store'
 
 const Header = () => {
-  const cart = useSelector((state: RootState) => state.user.cart);
+  const cart = useSelector((state: RootState) => state.user.cart)
 
-  const cartQuantity = cart.reduce((acc: number, item) => acc + item.quantity, 0);
+  const cartQuantity = cart.reduce((acc: number, item) => acc + item.quantity, 0)
 
   return (
     <nav className="bg-background sticky top-0 right-0 left-0 z-50 shadow-sm">
@@ -38,7 +40,7 @@ const Header = () => {
         </div>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

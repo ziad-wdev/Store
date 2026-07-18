@@ -1,4 +1,6 @@
-"use client";
+'use client'
+
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import {
   Pagination,
@@ -8,41 +10,39 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
-
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+} from '@/components/ui/pagination'
 
 const ProductPagePagination = ({ totalPages }: { totalPages: number }) => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
-  const page = Number(searchParams.get("page")) || 1;
+  const page = Number(searchParams.get('page')) || 1
 
   const updateParams = (updates: Record<string, string | number | null>) => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams.toString())
 
     Object.entries(updates).forEach(([key, value]) => {
       if (value) {
-        params.set(key, String(value));
+        params.set(key, String(value))
       } else {
-        params.delete(key);
+        params.delete(key)
       }
-    });
+    })
 
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  };
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+  }
 
   const handlePageChange = (choosenPage: number) => {
-    const targetNumber = Math.min(totalPages, Math.max(1, choosenPage));
-    updateParams({ page: targetNumber });
-  };
+    const targetNumber = Math.min(totalPages, Math.max(1, choosenPage))
+    updateParams({ page: targetNumber })
+  }
 
-  let startPage = Math.max(1, page - 2);
-  const endPage = Math.min(totalPages, startPage + 4);
+  let startPage = Math.max(1, page - 2)
+  const endPage = Math.min(totalPages, startPage + 4)
 
   if (endPage - startPage < 4) {
-    startPage = Math.max(1, endPage - 4);
+    startPage = Math.max(1, endPage - 4)
   }
 
   return (
@@ -50,7 +50,7 @@ const ProductPagePagination = ({ totalPages }: { totalPages: number }) => {
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            className={page === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+            className={page === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
             onClick={() => handlePageChange(page - 1)}
           />
         </PaginationItem>
@@ -60,7 +60,7 @@ const ProductPagePagination = ({ totalPages }: { totalPages: number }) => {
           </PaginationItem>
         )}
         {Array.from({ length: endPage - startPage + 1 }).map((_, i) => {
-          const targetPage = startPage + i;
+          const targetPage = startPage + i
 
           return (
             <PaginationItem key={targetPage}>
@@ -72,7 +72,7 @@ const ProductPagePagination = ({ totalPages }: { totalPages: number }) => {
                 {targetPage}
               </PaginationLink>
             </PaginationItem>
-          );
+          )
         })}
         {endPage < totalPages && (
           <PaginationItem>
@@ -81,13 +81,13 @@ const ProductPagePagination = ({ totalPages }: { totalPages: number }) => {
         )}
         <PaginationItem>
           <PaginationNext
-            className={page === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+            className={page === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
             onClick={() => handlePageChange(page + 1)}
           />
         </PaginationItem>
       </PaginationContent>
     </Pagination>
-  );
-};
+  )
+}
 
-export default ProductPagePagination;
+export default ProductPagePagination

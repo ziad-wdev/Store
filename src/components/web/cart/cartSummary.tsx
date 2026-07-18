@@ -1,13 +1,16 @@
-"use client";
+'use client'
 
-import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Product } from "@/store/apis/productsApi";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { useSelector } from 'react-redux'
+
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import { Product } from '@/store/apis/productsApi'
+import { RootState } from '@/store/store'
 
 const CartSummary = () => {
-  const cart: { product: Product; quantity: number }[] = useSelector((state: RootState) => state.user.cart);
+  const cart: { product: Product; quantity: number }[] = useSelector(
+    (state: RootState) => state.user.cart,
+  )
 
   return (
     <Card className="h-fit w-full max-w-md gap-0 p-4">
@@ -23,20 +26,25 @@ const CartSummary = () => {
                 <span>{item.quantity}</span>
                 <span>x</span>
                 <span>${item.product.price.toFixed(2)}</span>
-                <span className="text-right">${(item.product.price * item.quantity).toFixed(2)}</span>
+                <span className="text-right">
+                  ${(item.product.price * item.quantity).toFixed(2)}
+                </span>
               </div>
             ))}
           </div>
           <div className="flex items-center justify-between">
             <span className="text-md lg:text-lg">Total Price:</span>
             <span className="text-md lg:text-lg">
-              ${cart.reduce((acc: number, item) => acc + item.product.price * item.quantity, 0).toFixed(2)}
+              $
+              {cart
+                .reduce((acc: number, item) => acc + item.product.price * item.quantity, 0)
+                .toFixed(2)}
             </span>
           </div>
         </>
       )}
     </Card>
-  );
-};
+  )
+}
 
-export default CartSummary;
+export default CartSummary

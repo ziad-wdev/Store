@@ -1,13 +1,13 @@
-import ProductInfo from "@/components/web/products/productInfo";
+import ProductInfo from '@/components/web/products/productInfo'
 
 type Props = {
-  params: Promise<{ id: string }>;
-};
+  params: Promise<{ id: string }>
+}
 
 const ProductPage = async ({ params }: Props) => {
-  const { id } = await params;
+  const { id } = await params
 
-  return <ProductInfo id={Number(id)} />;
-};
+  return <ProductInfo id={Number(id)} />
+}
 
-export default ProductPage;
+export default ProductPage

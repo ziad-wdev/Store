@@ -1,33 +1,34 @@
-"use client";
+'use client'
 
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/store/store";
-import { addToCart, removeFromCart } from "@/store/slices/userSlice";
+import Image from 'next/image'
+import Link from 'next/link'
 
-import Image from "next/image";
-import { Card, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { X, Plus, Minus } from "lucide-react";
-import { ButtonGroup } from "@/components/ui/button-group";
-import { Product } from "@/store/apis/productsApi";
-import { toast } from "sonner";
-import Link from "next/link";
+import { Minus, Plus, X } from 'lucide-react'
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'sonner'
+
+import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
+import { Card, CardHeader } from '@/components/ui/card'
+import { Product } from '@/store/apis/productsApi'
+import { addToCart, removeFromCart } from '@/store/slices/userSlice'
+import { AppDispatch, RootState } from '@/store/store'
 
 const CardList = () => {
-  const cart = useSelector((state: RootState) => state.user.cart);
-  const dispatch: AppDispatch = useDispatch();
+  const cart = useSelector((state: RootState) => state.user.cart)
+  const dispatch: AppDispatch = useDispatch()
   const handleRemove = (productId: number, quantity: number) => {
-    dispatch(removeFromCart({ productId, quantity }));
-    toast.success(`Removed ${quantity} item${quantity !== 1 ? "s" : ""} from cart`);
-  };
+    dispatch(removeFromCart({ productId, quantity }))
+    toast.success(`Removed ${quantity} item${quantity !== 1 ? 's' : ''} from cart`)
+  }
   const handleIncrease = (product: Product) => {
-    dispatch(addToCart({ product, quantity: 1 }));
-    toast.success("Added 1 item to cart!");
-  };
+    dispatch(addToCart({ product, quantity: 1 }))
+    toast.success('Added 1 item to cart!')
+  }
   const handleDecrease = (productId: number) => {
-    dispatch(removeFromCart({ productId, quantity: 1 }));
-    toast.success("Removed 1 item from cart!");
-  };
+    dispatch(removeFromCart({ productId, quantity: 1 }))
+    toast.success('Removed 1 item from cart!')
+  }
 
   return (
     <div className="flex w-full flex-col justify-center gap-4">
@@ -53,15 +54,25 @@ const CardList = () => {
                 <Link href={`/products/${item.product.id}`}>
                   <h3 className="text-lg font-semibold">{item.product.title}</h3>
                 </Link>
-                <Button variant="ghost" size="sm" onClick={() => handleRemove(item.product.id, item.quantity)}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleRemove(item.product.id, item.quantity)}
+                >
                   <X />
                 </Button>
               </div>
               <p className="text-muted-foreground text-sm">Quantity: {item.quantity}</p>
               <div className="flex items-center justify-between gap-2">
-                <p className="text-card-foreground text-lg font-bold lg:text-xl">${item.product.price}</p>
+                <p className="text-card-foreground text-lg font-bold lg:text-xl">
+                  ${item.product.price}
+                </p>
                 <ButtonGroup>
-                  <Button variant="outline" size="sm" onClick={() => handleDecrease(item.product.id)}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleDecrease(item.product.id)}
+                  >
                     <Minus />
                   </Button>
                   <Button variant="outline" size="sm" onClick={() => handleIncrease(item.product)}>
@@ -74,7 +85,7 @@ const CardList = () => {
         ))
       )}
     </div>
-  );
-};
+  )
+}
 
-export default CardList;
+export default CardList

@@ -1,5 +1,5 @@
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button'
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 
 const HomeCarouselSkeleton = () => {
   return (
@@ -8,10 +8,12 @@ const HomeCarouselSkeleton = () => {
         <CarouselContent>
           <CarouselItem className="flex justify-between gap-6 max-sm:flex-col-reverse">
             <div className="flex-1">
-              <h2 className="skeleton mb-4 line-clamp-1 w-fit text-2xl lg:text-3xl">Product title</h2>
+              <h2 className="skeleton mb-4 line-clamp-1 w-fit text-2xl lg:text-3xl">
+                Product title
+              </h2>
               <p className="skeleton mb-6 max-w-md max-sm:line-clamp-2 lg:text-lg">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet minus atque fuga, sit fugit repellat ex
-                distinctio odit quae repellendus.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet minus atque fuga, sit
+                fugit repellat ex distinctio odit quae repellendus.
               </p>
               <Button className="skeleton">View Product</Button>
             </div>
@@ -25,7 +27,7 @@ const HomeCarouselSkeleton = () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default HomeCarouselSkeleton;
+export default HomeCarouselSkeleton

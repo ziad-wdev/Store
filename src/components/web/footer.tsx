@@ -1,5 +1,6 @@
-import { Store } from "lucide-react";
-import Link from "next/link";
+import Link from 'next/link'
+
+import { Store } from 'lucide-react'
 
 const Footer = () => {
   return (
@@ -44,10 +45,16 @@ const Footer = () => {
             <Link href="/track-order" className="hover:text-muted transition-all hover:scale-105">
               Track Your Order
             </Link>
-            <Link href="/corporate-bulk" className="hover:text-muted transition-all hover:scale-105">
+            <Link
+              href="/corporate-bulk"
+              className="hover:text-muted transition-all hover:scale-105"
+            >
               Corporate &amp; Bulk Purchases
             </Link>
-            <Link href="/returns-refunds" className="hover:text-muted transition-all hover:scale-105">
+            <Link
+              href="/returns-refunds"
+              className="hover:text-muted transition-all hover:scale-105"
+            >
               Returns &amp; Refunds
             </Link>
           </div>
@@ -66,7 +73,7 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

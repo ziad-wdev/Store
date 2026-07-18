@@ -1,21 +1,24 @@
-"use client";
+'use client'
 
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
-import { useSearchParams } from "next/navigation";
-import ProductCard from "@/components/ui/productCard";
-import ProductPagePagination from "../products/productPagePagination";
+import { useSearchParams } from 'next/navigation'
+
+import { useSelector } from 'react-redux'
+
+import ProductCard from '@/components/ui/productCard'
+import { RootState } from '@/store/store'
+
+import ProductPagePagination from '../products/productPagePagination'
 
 const LikesList = () => {
-  const searchParams = useSearchParams();
-  const page = Number(searchParams.get("page")) || 1;
+  const searchParams = useSearchParams()
+  const page = Number(searchParams.get('page')) || 1
 
-  const likes = useSelector((state: RootState) => state.user.likes);
+  const likes = useSelector((state: RootState) => state.user.likes)
 
-  const likesPerPage = 6;
-  const startIndex = Math.max(0, (page - 1) * likesPerPage);
-  const endIndex = Math.min(startIndex + likesPerPage, likes.length);
-  const paginatedLikes = likes.slice(startIndex, endIndex);
+  const likesPerPage = 6
+  const startIndex = Math.max(0, (page - 1) * likesPerPage)
+  const endIndex = Math.min(startIndex + likesPerPage, likes.length)
+  const paginatedLikes = likes.slice(startIndex, endIndex)
 
   return (
     <div>
@@ -35,7 +38,7 @@ const LikesList = () => {
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default LikesList;
+export default LikesList

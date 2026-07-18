@@ -1,38 +1,40 @@
-import { useDispatch, useSelector } from "react-redux";
-import { addLike, removeLike, addToCart } from "@/store/slices/userSlice";
-import { cn } from "@/lib/utils";
-import { toast } from "sonner";
+import Image from 'next/image'
+import Link from 'next/link'
 
-import Image from "next/image";
-import Link from "next/link";
-import { Card, CardDescription, CardHeader } from "./card";
-import { Product } from "@/store/apis/productsApi";
-import { Button } from "./button";
-import { Plus, Heart, Star, StarHalf } from "lucide-react";
-import { AppDispatch, RootState } from "@/store/store";
+import { Heart, Plus, Star, StarHalf } from 'lucide-react'
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'sonner'
+
+import { cn } from '@/lib/utils'
+import { Product } from '@/store/apis/productsApi'
+import { addLike, addToCart, removeLike } from '@/store/slices/userSlice'
+import { AppDispatch, RootState } from '@/store/store'
+
+import { Button } from './button'
+import { Card, CardDescription, CardHeader } from './card'
 
 const ProductCard = ({ product }: { product: Product }) => {
-  const roundedRating = Math.round(product.rating * 2) / 2;
-  const fullStars = Math.floor(roundedRating);
-  const halfStars = roundedRating % 1 !== 0 ? 1 : 0;
+  const roundedRating = Math.round(product.rating * 2) / 2
+  const fullStars = Math.floor(roundedRating)
+  const halfStars = roundedRating % 1 !== 0 ? 1 : 0
 
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch()
 
-  const isLiked = useSelector((state: RootState) => state.user.likes.includes(product));
+  const isLiked = useSelector((state: RootState) => state.user.likes.includes(product))
 
   const handleLikeToggle = () => {
     if (isLiked) {
-      dispatch(removeLike(product.id));
+      dispatch(removeLike(product.id))
     } else {
-      dispatch(addLike(product));
+      dispatch(addLike(product))
     }
-    toast.success(isLiked ? "Product unliked!" : "Product liked!");
-  };
+    toast.success(isLiked ? 'Product unliked!' : 'Product liked!')
+  }
 
   const handleAddToCart = () => {
-    dispatch(addToCart({ product, quantity: 1 }));
-    toast.success("Added 1 item to cart!");
-  };
+    dispatch(addToCart({ product, quantity: 1 }))
+    toast.success('Added 1 item to cart!')
+  }
 
   return (
     <Card className="group gap-0 p-0">
@@ -51,11 +53,11 @@ const ProductCard = ({ product }: { product: Product }) => {
           onClick={handleLikeToggle}
           variant="outline"
           className={cn(
-            "invisible absolute top-4 right-4 opacity-0 transition-opacity duration-300 group-hover:visible group-hover:opacity-100",
-            { "text-red-500 hover:text-red-500": isLiked },
+            'invisible absolute top-4 right-4 opacity-0 transition-opacity duration-300 group-hover:visible group-hover:opacity-100',
+            { 'text-red-500 hover:text-red-500': isLiked },
           )}
         >
-          <Heart className={isLiked ? "fill-current" : ""} />
+          <Heart className={isLiked ? 'fill-current' : ''} />
         </Button>
       </CardHeader>
       <CardDescription className="flex flex-col p-6">
@@ -79,7 +81,10 @@ const ProductCard = ({ product }: { product: Product }) => {
           </div>
         </div>
         <div className="flex items-center justify-between gap-4">
-          <Link href={`/products/${product.id}`} className="text-card-foreground text-xl font-bold lg:text-2xl">
+          <Link
+            href={`/products/${product.id}`}
+            className="text-card-foreground text-xl font-bold lg:text-2xl"
+          >
             ${product.price}
           </Link>
           <Button onClick={handleAddToCart} variant="outline">
@@ -88,7 +93,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         </div>
       </CardDescription>
     </Card>
-  );
-};
+  )
+}
 
-export default ProductCard;
+export default ProductCard

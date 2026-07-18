@@ -1,35 +1,35 @@
-"use client";
+'use client'
 
-import { Product, useGetBestSellersQuery } from "@/store/apis/productsApi";
-import { useEffect, useRef, useState } from "react";
-import { cn } from "@/lib/utils";
+import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
 
-import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import Link from "next/link";
+import Autoplay from 'embla-carousel-autoplay'
 
-import HomeCarouselSkeleton from "@/components/ui/homeCarouselSkeleton";
+import { Button } from '@/components/ui/button'
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel'
+import HomeCarouselSkeleton from '@/components/ui/homeCarouselSkeleton'
+import { cn } from '@/lib/utils'
+import { Product, useGetBestSellersQuery } from '@/store/apis/productsApi'
 
 const HomeCarousel = () => {
-  const { data, isLoading }: ReturnType<typeof useGetBestSellersQuery> = useGetBestSellersQuery();
-  const itemsNumber = 5;
-  const carouselItems = data?.slice(0, itemsNumber) || [];
+  const { data, isLoading }: ReturnType<typeof useGetBestSellersQuery> = useGetBestSellersQuery()
+  const itemsNumber = 5
+  const carouselItems = data?.slice(0, itemsNumber) || []
 
-  const plugin = useRef(Autoplay({ delay: 5000 }));
-  const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
+  const plugin = useRef(Autoplay({ delay: 5000 }))
+  const [api, setApi] = useState<CarouselApi>()
+  const [current, setCurrent] = useState(0)
 
   useEffect(() => {
-    if (!api) return;
+    if (!api) return
 
-    setCurrent(api.selectedScrollSnap() + 1);
+    setCurrent(api.selectedScrollSnap() + 1)
 
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1);
-    });
-  }, [api]);
+    api.on('select', () => {
+      setCurrent(api.selectedScrollSnap() + 1)
+    })
+  }, [api])
 
   return (
     <section className="h-[65vh] sm:h-[75vh]">
@@ -47,9 +47,14 @@ const HomeCarousel = () => {
           >
             <CarouselContent>
               {carouselItems.map((product: Product) => (
-                <CarouselItem key={product.id} className="flex justify-between gap-6 max-sm:flex-col-reverse">
+                <CarouselItem
+                  key={product.id}
+                  className="flex justify-between gap-6 max-sm:flex-col-reverse"
+                >
                   <div className="flex-1">
-                    <h2 className="mb-4 line-clamp-1 w-fit text-2xl lg:text-3xl">{product.title}</h2>
+                    <h2 className="mb-4 line-clamp-1 w-fit text-2xl lg:text-3xl">
+                      {product.title}
+                    </h2>
                     <p className="text-muted-foreground mb-6 max-w-md max-sm:line-clamp-2 lg:text-lg">
                       {product.description}
                     </p>
@@ -79,14 +84,14 @@ const HomeCarousel = () => {
               <button
                 key={i}
                 onClick={() => api?.scrollTo(i)}
-                className={cn("bg-muted size-2 rounded-full", { "bg-primary": i === current - 1 })}
+                className={cn('bg-muted size-2 rounded-full', { 'bg-primary': i === current - 1 })}
               ></button>
             ))}
           </div>
         </div>
       )}
     </section>
-  );
-};
+  )
+}
 
-export default HomeCarousel;
+export default HomeCarousel

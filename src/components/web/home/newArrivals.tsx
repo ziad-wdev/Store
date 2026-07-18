@@ -1,13 +1,13 @@
-"use client";
+'use client'
 
-import { Product, useGetNewArrivalsQuery } from "@/store/apis/productsApi";
-import ProductCard from "@/components/ui/productCard";
-import ProductCardSkeleton from "@/components/ui/productCardSkeleton";
+import ProductCard from '@/components/ui/productCard'
+import ProductCardSkeleton from '@/components/ui/productCardSkeleton'
+import { Product, useGetNewArrivalsQuery } from '@/store/apis/productsApi'
 
 const NewArrivals = () => {
-  const { data, isLoading }: ReturnType<typeof useGetNewArrivalsQuery> = useGetNewArrivalsQuery();
-  const itemsNumber = 6;
-  const showedItems = data?.slice(0, itemsNumber) || [];
+  const { data, isLoading }: ReturnType<typeof useGetNewArrivalsQuery> = useGetNewArrivalsQuery()
+  const itemsNumber = 6
+  const showedItems = data?.slice(0, itemsNumber) || []
 
   return (
     <section className="bg-muted-foreground/10">
@@ -16,11 +16,13 @@ const NewArrivals = () => {
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {isLoading
             ? Array.from({ length: itemsNumber }).map((_, i) => <ProductCardSkeleton key={i} />)
-            : showedItems?.map((product: Product) => <ProductCard key={product.id} product={product} />)}
+            : showedItems?.map((product: Product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default NewArrivals;
+export default NewArrivals
